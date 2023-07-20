@@ -27,7 +27,14 @@
     <one-zero.version>1.0.0</one-zero.version>
   </properties>
 
-
+  <repositories>
+    <!--仓库地址-->
+    <repository>
+      <id>github</id>
+      <name>GitHub OWNER Apache Maven Packages</name>
+      <url>https://maven.pkg.github.com/voncho-zero/repository</url>
+    </repository>
+  </repositories>
 
   <dependencyManagement>
     <dependencies>
