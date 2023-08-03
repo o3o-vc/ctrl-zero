@@ -13,6 +13,7 @@
     <module>repository</module>
     <module>service</module>
     <module>backend</module>
+      <module>authorization-server</module>
   </modules>
 
   <properties>
@@ -20,8 +21,8 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spring-boot.version>3.1.1</spring-boot.version>
-    <mybatis-flex.version>1.5.2</mybatis-flex.version>
+    <spring-boot.version>3.1.2</spring-boot.version>
+    <mybatis-flex.version>1.5.5</mybatis-flex.version>
     <lombok.version>1.18.24</lombok.version>
     <pagehelper.version>5.3.3</pagehelper.version>
     <one-zero.version>1.0.0</one-zero.version>
@@ -68,6 +69,10 @@
           <source>${java.version}</source>
           <target>${java.version}</target>
           <encoding>${project.build.sourceEncoding}</encoding>
+
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
 
           <annotationProcessorPaths>
             <path>

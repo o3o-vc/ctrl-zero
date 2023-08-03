@@ -24,7 +24,7 @@ public class JsonAuthenticationSuccessHandler extends SavedRequestAwareAuthentic
         //默认页面跳转
         //super.onAuthenticationSuccess(request, response, authentication);
         response.setContentType("application/json;charset=utf-8");
-        log.info("登录成功", request.getSession().getId());
+        log.info("登录成功, {}", request.getSession().getId());
         response.getWriter().write(JacksonUtil.asString(Result.ok("登录成功",
                 map -> map.put("token", request.getSession().getId())
         )));

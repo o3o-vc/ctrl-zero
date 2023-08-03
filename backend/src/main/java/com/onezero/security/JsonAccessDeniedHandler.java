@@ -17,7 +17,7 @@ public class JsonAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException {
         response.setContentType("application/json;charset=utf-8");
-        log.error(String.format("%s:没有权限", request.getRequestURI()),accessDeniedException);
+        log.error(String.format("%s:没有权限", request.getRequestURI()), accessDeniedException);
         response.getWriter().write(JacksonUtil.asString(Result.get(Result.SYS_FORBIDDEN, "权限验证失败", request.getRequestURI())));
     }
 }

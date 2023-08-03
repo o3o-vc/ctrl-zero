@@ -20,9 +20,9 @@ public class JsonAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
-        //默认跳转url
-        //super.onAuthenticationFailure(request, response, exception);
-//        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+         /*默认跳转url
+         super.onAuthenticationFailure(request, response, exception);
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);*/
         response.setContentType("application/json;charset=utf-8");
         log.error("登录失败", exception);
         response.getWriter().write(JacksonUtil.asString(Result.message(Result.SYS_UNAUTHORIZED, exception.getMessage())));

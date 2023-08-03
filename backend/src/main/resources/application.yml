@@ -2,19 +2,18 @@ spring:
   profiles:
     active: dev
   application:
-    name: ctrlzero
+    name: ctrl-zero
 server:
   port: 8333
 mybatis-flex:
   mapper-locations:
     - classpath*:/mapper/*.xml
 
----
-spring:
-  config:
-    active:
-      on-profile: dev
-  datasource:
-    url: jdbc:mysql://localhost:3306/ctrl_zero
-    username: root
-    password: 12345678
+access-token:
+  private: "access-refresh-token-keys/access-token-private.key"
+  public: "access-refresh-token-keys/access-token-public.key"
+refresh-token:
+  private: "access-refresh-token-keys/refresh-token-private.key"
+  public: "access-refresh-token-keys/refresh-token-public.key"
+
+

@@ -6,13 +6,9 @@
 
     <springProfile name="dev">
         <logger name="com.onezero" level="DEBUG"/>
-        <logger name="com.github.pagehelper" level="DEBUG" />
-
     </springProfile>
     <springProfile name="test">
         <logger name="com.onezero" level="DEBUG"/>
-        <logger name="com.github.pagehelper" level="DEBUG" />
-
     </springProfile>
 
     <root level="WARN">

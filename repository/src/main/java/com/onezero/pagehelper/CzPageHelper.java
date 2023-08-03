@@ -31,12 +31,12 @@ public class CzPageHelper extends PageHelper {
             }
         }
         if (o instanceof PageInfo<?> page) {
-            return PageHelper.startPage(page.getPageNumber(), page.getPageSize());
+            return PageHelper.startPage((int) page.getPageNumber(), (int) page.getPageSize());
         }
         if (o instanceof Map<?,?> map) {
             for (Object arg : map.values()) {
                 if (arg instanceof PageInfo<?> page) {
-                    return PageHelper.startPage(page.getPageNumber(), page.getPageSize());
+                    return PageHelper.startPage((int) page.getPageNumber(), (int) page.getPageSize());
                 }
             }
         }

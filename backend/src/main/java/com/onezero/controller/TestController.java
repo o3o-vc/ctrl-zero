@@ -2,11 +2,12 @@ package com.onezero.controller;
 
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
-import com.onezero.base.Params;
+import com.onezero.core.enhance.Params;
 import com.onezero.domain.TestDo;
 import com.onezero.mapper.TestMapper;
 import com.onezero.domain.PageInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class TestController {
     private final TestMapper testMapper;
 
     @GetMapping("test")
-    public String test() {
+    public String test(Authentication auth) {
         TestDo testDo = new TestDo();
         testDo.setName("test");
         testDo.setMark("haha");

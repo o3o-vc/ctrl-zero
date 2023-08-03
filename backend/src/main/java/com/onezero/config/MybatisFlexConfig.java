@@ -9,6 +9,7 @@ import com.onezero.base.Modifiable;
 import com.onezero.mybatisflex.CzInsertListener;
 import com.onezero.mybatisflex.CzUpdateListener;
 import com.onezero.pagehelper.CzMysqlDialect;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,6 +17,7 @@ import java.util.Properties;
 
 
 @Configuration
+@MapperScan("com.onezero.mapper")
 public class MybatisFlexConfig implements MyBatisFlexCustomizer {
     @Override
     public void customize(FlexGlobalConfig flexGlobalConfig) {

@@ -49,13 +49,13 @@ public class CzPageInterceptor extends PageInterceptor {
             }
         }
         if (o instanceof PageInfo<?> page) {
-            PageHelper.startPage(page.getPageNumber(), page.getPageSize());
+            PageHelper.startPage((int) page.getPageNumber(), (int) page.getPageSize());
             return true;
         }
         if (o instanceof Map<?,?> map) {
             for (Object arg : map.values()) {
                 if (arg instanceof PageInfo<?> page) {
-                    PageHelper.startPage(page.getPageNumber(), page.getPageSize());
+                    PageHelper.startPage((int) page.getPageNumber(), (int) page.getPageSize());
                     return true;
                 }
             }

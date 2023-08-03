@@ -11,9 +11,9 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 /**
- * @author: FenCho
- * @description: 前端结果包装类
- * @date: 2022/11/29 11:01
+ * {@code @author:} FenCho
+ * {@code @description:} 前端结果包装类
+ * {@code @date:} 2022/11/29 11:01
  */
 @Data
 @AllArgsConstructor
