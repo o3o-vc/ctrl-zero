@@ -30,6 +30,7 @@ public class TestController {
         List<TestDo> testDos = testMapper.selectAll();
         System.out.println(testDos);
         Page<TestDo> paginate = testMapper.paginate(1, 10, new QueryWrapper());
+        QueryWrapper queryWrapper = QueryWrapper.create();
         System.out.println(paginate);
         List<TestDo> testDos1 = testMapper.selectListByMap(Params.create().put("name", "1234").asMap());
 

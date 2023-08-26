@@ -24,26 +24,26 @@ public class AuthController {
     private final TokenService tokenService;
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
     @PostMapping("login")
-    public Result<TokenResponse> login(String userName, String password) {
+    public TokenResponse login(String userName, String password) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userName, password, new ArrayList<>());
         Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-        return Result.ok(tokenService.createToken(authenticate));
+        return tokenService.createToken(authenticate);
     }
 
     @PostMapping("token")
-    public Result<TokenResponse> token(String refreshToken) {
+    public TokenResponse token(String refreshToken) {
         Authentication authenticate = jwtAuthenticationProvider.authenticate(new BearerTokenAuthenticationToken(refreshToken));
-        return Result.ok(tokenService.createToken(authenticate));
+        return tokenService.createToken(authenticate);
     }
 
     @GetMapping("getUserInfo")
-    public Result<UserInfo> getUserInfo(Authentication auth) {
+    public UserInfo getUserInfo(Authentication auth) {
         if (auth.getPrincipal() instanceof SecurityUser user) {
             UserInfo userInfo = new UserInfo(user);
             userInfo.setUserRole("super");
-            return Result.ok(userInfo);
+            return userInfo;
         } else {
-         return Result.error("授权异常");
+         throw new RuntimeException("授权异常");
         }
     }
 }

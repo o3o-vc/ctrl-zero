@@ -11,4 +11,9 @@ import lombok.Setter;
 public class User extends Base {
     private String username;
     private String password;
+    private String status;
+    private Integer age;
+    private String gender;
+    private String phone;
+    private String email;
 }

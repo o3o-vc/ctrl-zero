@@ -1,6 +1,7 @@
 package com.onezero.domain;
 
 
+import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.onezero.base.Creatable;
@@ -17,4 +18,8 @@ public class Base implements IBase<Long>, Creatable<Long, LocalDateTime>, Modifi
     private LocalDateTime created;
     private Long modifier;
     private LocalDateTime modified;
+    @Column("creator_name")
+    private String creatorName;
+    @Column("modifier_name")
+    private String modifierName;
 }

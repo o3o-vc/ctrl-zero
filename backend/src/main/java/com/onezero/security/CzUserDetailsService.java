@@ -1,6 +1,7 @@
 package com.onezero.security;
 
 import com.onezero.domain.system.User;
+import com.onezero.service.system.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,12 +13,13 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CzUserDetailsService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
+    private final UserService userService;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = new User();
+        /*User user = new User();
         user.setId(0L);
         user.setUsername("Soybean");
-        user.setPassword(passwordEncoder.encode("soybean123"));
-        return new SecurityUser(user);
+        user.setPassword(passwordEncoder.encode("soybean123"));*/
+        return new SecurityUser(userService.getByUsername(username));
     }
 }

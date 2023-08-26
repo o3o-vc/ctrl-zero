@@ -34,19 +34,19 @@ public class Result<T> implements Serializable {
     private String message;
     private T data;
 
-    public static Result<Void> message(Integer code, String message) {
-        return get(code, message, null);
+    public static Result<String> message(Integer code, String message) {
+        return get(code, message, message);
     }
 
-    public static Result<Void> success(String message) {
+    public static Result<String> success(String message) {
         return message(BIZ_SUCCESS, message);
     }
 
-    public static Result<Void> info(String message) {
-        return message(BIZ_INFO, message);
+    public static Result<String> info(String message) {
+        return message(OK, message);
     }
 
-    public static Result<Void> warn(String message) {
+    public static Result<String> warn(String message) {
         return message(BIZ_WARN, message);
     }
 
@@ -90,7 +90,7 @@ public class Result<T> implements Serializable {
         return get(BIZ_ERROR, message, null);
     }
 
-    public static Result<Void> conditional(boolean condition, String trueMsg, String falseMsg) {
+    public static Result<String> conditional(boolean condition, String trueMsg, String falseMsg) {
         if (condition) {
             return success(trueMsg);
         } else {
@@ -104,7 +104,7 @@ public class Result<T> implements Serializable {
      * @param operationName 操作名称
      * @return 结果
      */
-    public static Result<Void> sf(int affected, String operationName) {
+    public static Result<String> sf(int affected, String operationName) {
         return conditional(affected > 0, operationName + "成功", operationName + "失败");
     }
     /**
@@ -113,7 +113,7 @@ public class Result<T> implements Serializable {
      * @param operationName 操作名称
      * @return 结果
      */
-    public static Result<Void> sf(Integer affected, String operationName) {
+    public static Result<String> sf(Integer affected, String operationName) {
         if (affected == null) {
             affected = 0;
         }
@@ -126,7 +126,7 @@ public class Result<T> implements Serializable {
      * @param operationName 操作名称
      * @return 结果
      */
-    public static Result<Void> sf(boolean succeed, String operationName) {
+    public static Result<String> sf(boolean succeed, String operationName) {
         return conditional(succeed, operationName + "成功", operationName + "失败");
     }
 }
