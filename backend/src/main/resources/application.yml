@@ -3,9 +3,9 @@ spring:
     active: dev
   application:
     name: ctrl-zero
-  devtools:
-    restart:
-      enabled: true
+#  devtools:
+#    restart:
+#      enabled: true
 server:
   port: 8333
 mybatis-flex:
