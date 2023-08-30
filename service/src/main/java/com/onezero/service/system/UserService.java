@@ -22,9 +22,8 @@ public class UserService {
         return userMapper.selectOneById(id);
     }
 
-    public List<User> list() {
-        QueryCondition condition = USER.ID.eq("", true)
-                .and(USER.USERNAME.eq(""));
+    public List<User> list(User user) {
+        QueryCondition condition = USER.USERNAME.eq(user.getUsername(), false);
         return userMapper.selectListByCondition(condition);
     }
 

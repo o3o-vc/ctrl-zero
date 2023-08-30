@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onezero.enums.EnableEnum;
 import com.onezero.model.Route;
 
 import java.util.List;
@@ -577,5 +578,6 @@ public class Handler {
         List<Map<String, Object>> routes = objectMapper.readValue(Handler.json, new TypeReference<>() {
         });
         System.out.println(routes);
+        System.out.println(EnableEnum.ENABLE.toString());
     }
 }

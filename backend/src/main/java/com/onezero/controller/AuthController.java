@@ -6,6 +6,7 @@ import com.onezero.model.Route;
 import com.onezero.model.TokenResponse;
 import com.onezero.model.UserInfo;
 import com.onezero.security.SecurityUser;
+import com.onezero.security.SecurityUtil;
 import com.onezero.security.TokenService;
 import com.onezero.service.system.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -54,8 +55,14 @@ public class AuthController {
         }
     }
     @PostMapping("getUserRoutes")
-    public Map<String, Object> getUserRoutes() {
-        List<Menu> menus = menuService.all();
+    public Map<String, Object> getUserRoutes(Authentication authentication) {
+        List<Menu> menus;
+        if (SecurityUtil.isAdmin(authentication)) {
+            menus = menuService.all();
+        } else {
+            menus = menuService.listByUser(SecurityUtil.getUserDetails(authentication).user().getId());
+        }
+
         List<Route> routes = TreeUtil.listToTree(menus, menu -> {
             Route route = new Route();
             route.setId(menu.getId());
