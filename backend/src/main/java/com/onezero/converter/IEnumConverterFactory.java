@@ -26,34 +26,26 @@ public class IEnumConverterFactory implements ConverterFactory<String, Enum> {
         return false;
     }
 
-    private static class StringToIEnum<T extends Enum> implements Converter<String, Enum> {
-        private final Class<T> enumType;
-
-        StringToIEnum(Class<T> enumType) {
-            this.enumType = enumType;
-        }
+    private record StringToIEnum<T extends Enum>(Class<T> enumType) implements Converter<String, Enum> {
         @Override
-        public Enum convert(String source) {
-            for (Enum e : enumType.getEnumConstants()) {
-                IEnum ie = (IEnum) e;
-                if (source.equals(ie.getCode().toString())) {
-                    return e;
+            public Enum convert(String source) {
+                for (Enum e : enumType.getEnumConstants()) {
+                    if (e instanceof IEnum<?> ie) {
+                        if (source.equals(ie.getCode().toString())) {
+                            return e;
+                        }
+                    }
                 }
+                return null;
             }
-            return null;
         }
-    }
-    private static class StringToEnum<T extends Enum> implements Converter<String, T> {
-        private final Class<T> enumType;
 
-        StringToEnum(Class<T> enumType) {
-            this.enumType = enumType;
-        }
+    private record StringToEnum<T extends Enum>(Class<T> enumType) implements Converter<String, T> {
 
         @Nullable
-        public T convert(String source) {
-            return source.isEmpty() ? null : (T) Enum.valueOf(this.enumType, source.trim());
+            public T convert(String source) {
+                return source.isEmpty() ? null : (T) Enum.valueOf(this.enumType, source.trim());
+            }
         }
-    }
 
 }
