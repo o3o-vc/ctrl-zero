@@ -1,7 +1,8 @@
 package com.onezero.security.access;
 
-import com.onezero.domain.CmdInfo;
+import com.onezero.enums.CmdEnum;
 import com.onezero.security.access.annotation.Cmd;
+import com.onezero.security.access.annotation.CmdHandler;
 import com.onezero.security.access.annotation.Group;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
@@ -40,7 +41,9 @@ public class CmdClassPathScanHandler extends ClassPathBeanDefinitionScanner {
         //添加过滤条件，这里是只添加的注解才会被扫描到
         addIncludeFilter(new AnnotationTypeFilter(Group.class));
         //调用spring的扫描
-        Set<CmdInfo> cmdInfos = new LinkedHashSet<>();
+        Set<CmdInfo> treeCmd = new LinkedHashSet<>();
+        Set<String> logged = new LinkedHashSet<>();
+        Set<String> permitted = new LinkedHashSet<>();
         for (String basePackage : basePackages) {
             Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
             for (BeanDefinition candidate : candidates) {
@@ -56,11 +59,11 @@ public class CmdClassPathScanHandler extends ClassPathBeanDefinitionScanner {
                     CmdInfo groupCmd = new CmdInfo();
                     assert className != null;
                     groupCmd.setId(className.replace(basePackage + ".", ""));
-                    /*groupCmd.setParentId(CmdTypeEnum.GROUP.name());
+                    groupCmd.setParentId(CmdEnum.GROUP.name());
                     groupCmd.setCode(groupCmd.getParentId() + ":" + groupCmd.getId());
-                    groupCmd.setType(CmdTypeEnum.GROUP);
+                    groupCmd.setType(CmdEnum.GROUP);
                     groupCmd.setName(groupAnnotation.getString("value"));
-                    FillUtil.fillAdm(groupCmd);*/
+                    groupCmd.setIsLeaf(false);
                     Set<MethodMetadata> annotatedMethods = metadata.getAnnotatedMethods(Cmd.class.getName());
                     if (!CollectionUtils.isEmpty(annotatedMethods)) {
                         List<CmdInfo> cmdList = new ArrayList<>();
@@ -71,21 +74,31 @@ public class CmdClassPathScanHandler extends ClassPathBeanDefinitionScanner {
                             CmdInfo cmdInfo = new CmdInfo();
                             cmdInfo.setParentId(groupCmd.getId());
                             String path = firstOfAnnotationParams(methodRequest);
-                            /*cmdInfo.setId(StringUtil.distinctConcat(prefix, path, "/", true));
+                            cmdInfo.setId((prefix + ">" + path).replace("/", ""));
                             cmdInfo.setCode(cmdInfo.getParentId() + ":" + cmdInfo.getId());
                             cmdInfo.setName(cmdAnnotation.getString("value"));
-                            cmdInfo.setType(CmdTypeEnum.CMD);
+                            cmdInfo.setType(CmdEnum.CMD);
                             cmdInfo.setLogged(cmdAnnotation.getBoolean("logged"));
-                            FillUtil.fillAdm(cmdInfo);*/
+                            cmdInfo.setPermitted(cmdAnnotation.getBoolean("permitted"));
+                            cmdInfo.setIsLeaf(true);
+                            cmdInfo.setChildren(List.of());
                             cmdList.add(cmdInfo);
+                            if (cmdInfo.getLogged()) {
+                                logged.add("/" + cmdInfo.getId().replace(">", "/"));
+                            }
+                            if (cmdInfo.getPermitted()) {
+                                permitted.add("/" + cmdInfo.getId().replace(">", "/"));
+                            }
                         }
                         groupCmd.setChildren(cmdList);
                     }
-                    cmdInfos.add(groupCmd);
+                    if (!groupCmd.getChildren().isEmpty()) {
+                        treeCmd.add(groupCmd);
+                    }
                 }
             }
         }
-        RootBeanDefinition beanDefinition = new RootBeanDefinition(CmdHandler.class, () -> new CmdHandler(cmdInfos));
+        RootBeanDefinition beanDefinition = new RootBeanDefinition(CmdHandler.class, () -> new CmdHandlerImpl(treeCmd, logged, permitted));
         beanDefinition.setAutowireMode(GenericBeanDefinition.AUTOWIRE_BY_TYPE);
         assert getRegistry() != null;
         getRegistry().registerBeanDefinition("cmdHandler", beanDefinition);

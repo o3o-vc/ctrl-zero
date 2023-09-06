@@ -11,4 +11,6 @@ import static java.lang.annotation.ElementType.METHOD;
 public @interface Cmd {
     String value();
     boolean logged() default false;
+
+    boolean permitted() default false;
 }

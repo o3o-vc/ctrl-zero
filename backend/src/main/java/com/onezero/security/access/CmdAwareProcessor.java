@@ -22,7 +22,7 @@ public class CmdAwareProcessor implements BeanPostProcessor, ApplicationContextA
     public Object postProcessBeforeInitialization(@NonNull Object bean, @NonNull String beanName) throws BeansException {
         if (bean instanceof Aware) {
             if (bean instanceof CmdHandlerAware cmdHandlerAware) {
-                CmdHandler cmdHandler = applicationContext.getBean(CmdHandler.class);
+                CmdHandlerImpl cmdHandler = applicationContext.getBean(CmdHandlerImpl.class);
                 cmdHandlerAware.setCmdHandler(cmdHandler);
                 return bean;
             }

@@ -7,6 +7,7 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.onezero.security.*;
+import com.onezero.security.access.annotation.CmdHandler;
 import com.onezero.security.access.annotation.CmdScan;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,7 +18,6 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -42,10 +42,11 @@ import org.springframework.security.web.access.intercept.RequestAuthorizationCon
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 import java.util.Locale;
+import java.util.Set;
 
 @Configuration
 @EnableWebSecurity
-@CmdScan({"com.bmht.adv.controller"})
+@CmdScan({"com.onezero.controller"})
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -57,8 +58,8 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
     @Bean
-    public AuthorizationManager<RequestAuthorizationContext> authorizationManager() {
-        return new CzAuthorizationManager();
+    public AuthorizationManager<RequestAuthorizationContext> authorizationManager(CmdHandler cmdHandler) {
+        return new CzAuthorizationManager(cmdHandler);
     }
     @Bean
     public AuthenticationProvider authenticationProvider(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
@@ -83,7 +84,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
-//            AuthorizationManager<RequestAuthorizationContext> authorizationManager,
+            AuthorizationManager<RequestAuthorizationContext> authorizationManager,
             AuthenticationProvider authenticationProvider,
 //            AccessDeniedHandler accessDeniedHandler,
 //            AuthenticationEntryPoint authenticationEntryPoint,
@@ -111,9 +112,9 @@ public class SecurityConfig {
                             auth.requestMatchers("/login",  "/token", "/captcha/**").permitAll();
                             //只验证登录不验证权限
                             auth.requestMatchers("/getUserInfo", "/getUserRoutes", "/base/**").authenticated();
-                            auth.anyRequest().authenticated();
+//                            auth.anyRequest().authenticated();
                             //permission handle
-//                            auth.anyRequest().access(authorizationManager);
+                            auth.anyRequest().access(authorizationManager);
                         }
                 )
                 .authenticationProvider(authenticationProvider)

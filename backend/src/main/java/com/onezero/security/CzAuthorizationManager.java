@@ -1,5 +1,6 @@
 package com.onezero.security;
 
+import com.onezero.security.access.annotation.CmdHandler;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationTrustResolver;
@@ -18,6 +19,8 @@ import java.util.function.Supplier;
 public class CzAuthorizationManager implements AuthorizationManager<RequestAuthorizationContext> {
     private final AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
+    private final CmdHandler cmdHandler;
+
 
     /**
      * Determines if the current user is authorized by evaluating if the
@@ -28,28 +31,36 @@ public class CzAuthorizationManager implements AuthorizationManager<RequestAutho
      */
     @Override
     public AuthorizationDecision check(Supplier<Authentication> authentication, RequestAuthorizationContext context) {
-        Authentication auth = authentication.get();
-        boolean isGranted = isGranted(auth);
-        // 当前用户的权限信息 比如角色
-        Collection<? extends GrantedAuthority> authorities = authentication.get().getAuthorities();
         // 当前请求上下文
         // 我们可以获取携带的参数
         // Map<String, String> variables = context.getVariables();
         // 我们可以获取原始request对象
         HttpServletRequest request = context.getRequest();
         String requestUri = request.getRequestURI();
-
-        // 根据这些信息 和业务写逻辑即可 最终决定是否授权 isGranted 权限验证
-        /*if (!SecurityUtil.isAdmin(auth)) {
+        if (isLogged(requestUri)) {
+            return new AuthorizationDecision(true);
+        }
+        Authentication auth = authentication.get();
+        boolean isGranted = isGranted(auth);
+        if (!isPermitted(requestUri) && !SecurityUtil.isAdmin(auth)) {
+            // 当前用户的权限信息 比如角色
+            Collection<? extends GrantedAuthority> authorities = authentication.get().getAuthorities();
             if (!authorities.contains(new SimpleGrantedAuthority(requestUri))) {
                 isGranted = false;
             }
-        }*/
+        }
         return new AuthorizationDecision(isGranted);
     }
 
     private boolean isGranted(Authentication authentication) {
         return authentication != null && isNotAnonymous(authentication) && authentication.isAuthenticated();
+    }
+
+    private boolean isLogged(String uri) {
+        return cmdHandler.getLogged().contains(uri);
+    }
+    private boolean isPermitted(String uri) {
+        return cmdHandler.getPermitted().contains(uri);
     }
 
     private boolean isNotAnonymous(Authentication authentication) {
