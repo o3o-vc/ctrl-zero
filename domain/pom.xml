@@ -17,9 +17,9 @@
             <artifactId>one-zero-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.mybatis-flex</groupId>
-            <artifactId>mybatis-flex-core</artifactId>
-            <version>${mybatis-flex.version}</version>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>sql-core</artifactId>
+            <version>${beetlsql.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,9 +1,10 @@
 package com.onezero.domain;
 
-import com.mybatisflex.annotation.Column;
 import com.onezero.base.ITree;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.beetl.sql.annotation.entity.InsertIgnore;
+import org.beetl.sql.annotation.entity.UpdateIgnore;
 
 import java.util.List;
 
@@ -11,7 +12,8 @@ import java.util.List;
 @Data
 public class Tree<T extends  Tree<T>> extends Base implements ITree<Long, T> {
     private Long parentId;
-    @Column(ignore = true)
+    @InsertIgnore
+    @UpdateIgnore
     private List<T> children;
     private Integer orderNo;
     private Boolean isLeaf;

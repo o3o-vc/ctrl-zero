@@ -3,14 +3,10 @@ spring:
     active: dev
   application:
     name: ctrl-zero
-#  devtools:
-#    restart:
-#      enabled: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
 server:
   port: 8333
-mybatis-flex:
-  mapper-locations:
-    - classpath*:/mapper/*.xml
 
 access-token:
   private: "access-refresh-token-keys/access-token-private.key"
@@ -20,3 +16,9 @@ refresh-token:
   public: "access-refresh-token-keys/refresh-token-public.key"
 
 
+beetlsql:
+  sqlManagers: sqlManager1
+  sqlManager1:
+    ds: datasource
+    basePackage: com.onezero.mapper
+    dbStyle: com.onezero.config.CzMysqlStyle

@@ -4,9 +4,18 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.onezero.Handler;
+import com.onezero.domain.PageInfo;
+import com.onezero.domain.TestDo;
 import com.onezero.domain.system.Menu;
+import com.onezero.domain.system.User;
+import com.onezero.mapper.TestMapper;
 import com.onezero.mapper.system.MenuMapper;
+import com.onezero.mapper.system.UserMapper;
+import com.onezero.service.system.UserService;
 import lombok.RequiredArgsConstructor;
+import org.beetl.sql.core.page.DefaultPageRequest;
+import org.beetl.sql.core.page.DefaultPageResult;
+import org.beetl.sql.core.page.PageResult;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -18,16 +27,35 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class Initial implements CommandLineRunner {
     private final MenuMapper menuMapper;
+    private final TestMapper testMapper;
+    private final UserService userService;
     @Override
     public void run(String... args) throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
+        /*ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         List<Map<String, Object>> routes = objectMapper.readValue(Handler.json, new TypeReference<>() {
         });
         List<Menu> groups = new ArrayList<>();
         routes.forEach(first -> groups.add(fillMenu(first)));
         groups.forEach(m -> insertMenu(m, 0L));
-        System.out.println(groups);
+        System.out.println(groups);*/
+        List<TestDo> all = testMapper.select();
+        System.out.println(all.size());
+        DefaultPageRequest.of(1, 2);
+        PageResult<TestDo> pageResult = testMapper.page(PageInfo.of(1, 2), "test");
+        System.out.println(pageResult);
+        PageResult<User> page = userService.page(PageInfo.of(1, 2), new User());
+        System.out.println(page);
+//        userService.deleteBatch(new Long[]{6L});
+        User user = new User();
+        user.setName("abc");
+        userService.add(user);
+        System.out.println(user);
+        TestDo testDo = new TestDo();
+        testDo.setName("haoa");
+        testDo.setMark("bieguan");
+        testMapper.testInsert(testDo);
+        testMapper.updateById(testDo);
     }
 
     private void insertMenu(Menu menu, Long parentId) {
@@ -40,7 +68,7 @@ public class Initial implements CommandLineRunner {
     }
 
     public static void main(String[] args) throws Exception {
-        new Initial(null).run();
+//        new Initial(null).run();
     }
 
     private Menu fillMenu(Map<?, ?> target) {

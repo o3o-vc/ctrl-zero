@@ -1,9 +1,9 @@
 package com.onezero.domain;
 
-import com.mybatisflex.annotation.Table;
 import lombok.Data;
+import org.beetl.sql.annotation.entity.Table;
 
-@Table("test")
+@Table(name = "test")
 @Data
 public class TestDo extends Base {
     private String name;

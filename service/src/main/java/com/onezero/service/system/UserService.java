@@ -1,17 +1,18 @@
 package com.onezero.service.system;
 
-import com.mybatisflex.core.paginate.Page;
-import com.mybatisflex.core.query.QueryCondition;
-import com.mybatisflex.core.query.QueryWrapper;
+
+import com.onezero.base.IBase;
+import com.onezero.domain.Base;
+import com.onezero.domain.PageInfo;
 import com.onezero.domain.system.User;
 import com.onezero.mapper.system.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.beetl.sql.core.page.PageResult;
+import org.beetl.sql.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-
-import static com.onezero.domain.system.table.UserTableDef.*;
 
 @Service
 @RequiredArgsConstructor
@@ -19,28 +20,27 @@ public class UserService {
     private final UserMapper userMapper;
 
     public User get(Long id) {
-        return userMapper.selectOneById(id);
+        return userMapper.single(id);
     }
 
     public List<User> list(User user) {
-        QueryCondition condition = USER.USERNAME.eq(user.getUsername(), false);
-        return userMapper.selectListByCondition(condition);
+        return userMapper.createLambdaQuery()
+                .andEq(User::getUsername, Query.filterEmpty(user.getUsername()))
+                .select();
     }
 
     public User getByUsername(String username) {
-        return userMapper.selectOneByCondition(
-                USER.USERNAME.eq(username)
-        );
+        return userMapper.createLambdaQuery()
+                .andEq(User::getUsername, username)
+                .single();
     }
 
-    public int add(User user) {
-        int inserted = userMapper.insert(user);
-        System.out.println(user);
-        return inserted;
+    public void add(User user) {
+        userMapper.insert(user);
     }
 
     public int update(User user) {
-        return userMapper.update(user);
+        return userMapper.updateById(user);
     }
 
     public int delete(Long id) {
@@ -48,11 +48,14 @@ public class UserService {
     }
 
     public int deleteBatch(Long[] ids) {
-        return userMapper.deleteBatchByIds(Arrays.stream(ids).toList());
+        return userMapper.createLambdaQuery()
+                .andIn("id", Arrays.stream(ids).toList())
+                .delete();
     }
 
-    public Page<User> page(Page<User> page, User user) {
-        QueryWrapper queryWrapper = QueryWrapper.create(new User());
-        return userMapper.paginate(page, queryWrapper);
+    public PageResult<User> page(PageInfo<User> page, User user) {
+        return userMapper.createLambdaQuery()
+                .andEq(User::getUsername, Query.filterEmpty(user.getUsername()))
+                .page(page);
     }
 }

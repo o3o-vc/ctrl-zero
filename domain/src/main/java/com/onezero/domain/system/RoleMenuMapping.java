@@ -1,18 +1,19 @@
 package com.onezero.domain.system;
 
-import com.mybatisflex.annotation.Id;
-import com.mybatisflex.annotation.KeyType;
-import com.mybatisflex.annotation.Table;
-import lombok.Data;
-import lombok.experimental.Accessors;
 
-@Table("role_menu_mapping")
-@Data(staticConstructor = "create")
-@Accessors(chain = true)
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
+import org.beetl.sql.annotation.entity.AssignID;
+import org.beetl.sql.annotation.entity.Table;
+
+@Table(name = "role_menu_mapping")
+@Data
 public class RoleMenuMapping {
-    @Id(keyType = KeyType.None)
+
+    @AssignID
     private Long roleId;
-    @Id(keyType = KeyType.None)
+    @AssignID
     private Long menuId;
     private Boolean isMark;
 }

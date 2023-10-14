@@ -1,11 +1,11 @@
 package com.onezero.domain.system;
 
-import com.mybatisflex.annotation.Table;
 import com.onezero.domain.Base;
 import lombok.Getter;
 import lombok.Setter;
+import org.beetl.sql.annotation.entity.Table;
 
-@Table("user")
+@Table(name = "user")
 @Getter
 @Setter
 public class User extends Base {

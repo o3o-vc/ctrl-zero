@@ -1,6 +1,6 @@
 package com.onezero.controller;
 
-import com.mybatisflex.core.paginate.Page;
+import com.onezero.domain.PageInfo;
 import com.onezero.domain.system.Role;
 import com.onezero.domain.system.RoleMenuMapping;
 import com.onezero.domain.system.RoleUserMapping;
@@ -11,6 +11,7 @@ import com.onezero.security.access.annotation.CmdHandler;
 import com.onezero.security.access.annotation.Group;
 import com.onezero.service.system.RoleService;
 import lombok.RequiredArgsConstructor;
+import org.beetl.sql.core.page.PageResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class RoleController {
 
     @Cmd("分页查询")
     @GetMapping("page")
-    public Page<Role> page(Page<Role> page, Role role) {
+    public PageResult<Role> page(PageInfo<Role> page, Role role) {
         return roleService.page(page, role);
     }
     @PostMapping("add")

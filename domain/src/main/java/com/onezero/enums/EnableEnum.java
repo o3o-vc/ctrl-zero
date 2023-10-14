@@ -1,8 +1,8 @@
 package com.onezero.enums;
 
-import com.mybatisflex.annotation.EnumValue;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.beetl.sql.annotation.entity.EnumValue;
 
 @RequiredArgsConstructor
 @Getter

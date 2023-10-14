@@ -1,11 +1,12 @@
 package com.onezero.controller;
 
-import com.mybatisflex.core.paginate.Page;
+import com.onezero.domain.PageInfo;
 import com.onezero.domain.system.User;
 import com.onezero.model.Result;
 import com.onezero.model.UserModel;
 import com.onezero.service.system.UserService;
 import lombok.RequiredArgsConstructor;
+import org.beetl.sql.core.page.PageResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("page")
-    public Page<User> page(Page<User> page, UserModel userModel) {
+    public PageResult<User> page(PageInfo<User> page, UserModel userModel) {
         return userService.page(page, userModel);
     }
 

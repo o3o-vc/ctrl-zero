@@ -1,10 +1,10 @@
 package com.onezero.domain.system;
 
-import com.mybatisflex.annotation.Table;
 import com.onezero.domain.Tree;
 import lombok.Data;
+import org.beetl.sql.annotation.entity.Table;
 
-@Table("menu")
+@Table(name = "menu")
 @Data
 public class Menu extends Tree<Menu> {
     private String name;
