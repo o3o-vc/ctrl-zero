@@ -31,5 +31,10 @@
             <groupId>com.ibeetl</groupId>
             <artifactId>sql-springboot-starter</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ibeetl</groupId>
+            <artifactId>sql-accelerator</artifactId>
+            <version>${beetlsql.version}</version>
+        </dependency>
     </dependencies>
 </project>
