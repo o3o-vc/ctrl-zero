@@ -10,6 +10,7 @@ public class UserInfo {
     private final SecurityUser user;
     private String userId;
     private String userName;
+    private String name;
     @Setter
     @Getter
     private String userRole;
@@ -19,5 +20,8 @@ public class UserInfo {
     }
     public String getUserName() {
         return user.getUsername();
+    }
+    public String getName() {
+        return user.getName();
     }
 }
