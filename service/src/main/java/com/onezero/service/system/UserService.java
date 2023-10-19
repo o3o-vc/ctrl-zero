@@ -30,9 +30,10 @@ public class UserService {
     }
 
     public User getByUsername(String username) {
-        return userMapper.createLambdaQuery()
+        /*return userMapper.createLambdaQuery()
                 .andEq(User::getUsername, username)
-                .single();
+                .unique();*/
+        return userMapper.findByUsername(username);
     }
 
     public void add(User user) {

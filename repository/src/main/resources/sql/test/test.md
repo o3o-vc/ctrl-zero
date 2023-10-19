@@ -19,5 +19,5 @@ where 1 = 1
 testInsert
 ===
 ```sql
-insert into test (name, mark) values (#{testDo.name}, #{testDo.mark})
+insert into test (name, mark) values (#{name}, #{mark})
 ```

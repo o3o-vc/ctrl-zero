@@ -1,5 +1,6 @@
 package com.onezero.mapper;
 
+import com.onezero.beetlsql.Insert;
 import com.onezero.domain.TestDo;
 import com.onezero.domain.PageInfo;
 import org.beetl.sql.core.page.PageResult;
@@ -19,7 +20,6 @@ public interface TestMapper extends BaseMapper<TestDo> {
 
     PageResult<TestDo> page(PageInfo<TestDo> pageRequest, String name);
 
-    @Update
-    @InheritMapper
+    @Insert
     int testInsert(TestDo testDo);
 }

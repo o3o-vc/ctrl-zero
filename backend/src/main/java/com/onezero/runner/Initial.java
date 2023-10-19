@@ -47,15 +47,17 @@ public class Initial implements CommandLineRunner {
         PageResult<User> page = userService.page(PageInfo.of(1, 2), new User());
         System.out.println(page);
 //        userService.deleteBatch(new Long[]{6L});
-        User user = new User();
+        /*User user = new User();
         user.setName("abc");
         userService.add(user);
-        System.out.println(user);
+        System.out.println(user);*/
         TestDo testDo = new TestDo();
         testDo.setName("haoa");
         testDo.setMark("bieguan");
         testMapper.testInsert(testDo);
         testMapper.updateById(testDo);
+        User byUsername = userService.getByUsername("admin");
+        System.out.println(byUsername);
     }
 
     private void insertMenu(Menu menu, Long parentId) {
