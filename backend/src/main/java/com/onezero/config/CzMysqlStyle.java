@@ -13,6 +13,23 @@ import java.util.Objects;
 public class CzMysqlStyle extends MySqlStyle {
     @Override
     public SQLExecutor buildExecutor(ExecuteContext executeContext) {
+        SQLType sqlType = executeContext.sqlSource.sqlType;
+        if (sqlType.isUpdate() && !sqlType.equals(SQLType.DELETE)) {
+            OperatorInfo result = getOperatorInfo();
+            if (sqlType.equals(SQLType.INSERT)) {
+                executeContext.setContextPara("created", LocalDateTime.now());
+                executeContext.setContextPara("creator", result.userId());
+                executeContext.setContextPara("creatorName", result.name());
+            } else if (sqlType.equals(SQLType.UPDATE)) {
+                executeContext.setContextPara("modified", LocalDateTime.now());
+                executeContext.setContextPara("modifier", result.userId());
+                executeContext.setContextPara("modifierName", result.name());
+            }
+        }
+        return super.buildExecutor(executeContext);
+    }
+
+    private static OperatorInfo getOperatorInfo() {
         UserInfo userInfo = null;
         long userId = 0;
         String name = "系统";
@@ -24,16 +41,10 @@ public class CzMysqlStyle extends MySqlStyle {
             userId = Long.parseLong(userInfo.getUserId());
             name = userInfo.getUserName();
         }
-        SQLType sqlType = executeContext.sqlSource.sqlType;
-        if (sqlType.equals(SQLType.INSERT)) {
-            executeContext.setContextPara("created", LocalDateTime.now());
-            executeContext.setContextPara("creator", userId);
-            executeContext.setContextPara("creatorName", name);
-        } else if (sqlType.equals(SQLType.UPDATE)) {
-            executeContext.setContextPara("modified", LocalDateTime.now());
-            executeContext.setContextPara("modifier", userId);
-            executeContext.setContextPara("modifierName", name);
-        }
-        return super.buildExecutor(executeContext);
+        OperatorInfo result = new OperatorInfo(userId, name);
+        return result;
+    }
+
+    private record OperatorInfo(long userId, String name) {
     }
 }
