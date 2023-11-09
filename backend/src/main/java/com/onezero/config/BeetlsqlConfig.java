@@ -1,6 +1,7 @@
 package com.onezero.config;
 
 import com.beetl.sql.pref.PerformanceConfig;
+import com.onezero.permission.DataPermissionInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
 import org.beetl.sql.core.ExecuteContext;
 import org.beetl.sql.core.Interceptor;
@@ -34,10 +35,10 @@ public class BeetlsqlConfig {
     @Bean
     public SQLManagerCustomize mySQLManagerCustomize(){
         return (sqlMangerName, manager) -> {
-            /*List<Interceptor> interceptors = new ArrayList<>(Arrays.asList(manager.getInters()));
-            FillInterceptor fillInterceptor = new FillInterceptor();
-            interceptors.add(fillInterceptor);
-            manager.setInters(interceptors.toArray(new Interceptor[0]));*/
+            List<Interceptor> interceptors = new ArrayList<>(Arrays.asList(manager.getInters()));
+            DataPermissionInterceptor interceptor = new DataPermissionInterceptor();
+            interceptors.add(interceptor);
+            manager.setInters(interceptors.toArray(new Interceptor[0]));
             PerformanceConfig performanceConfig = new PerformanceConfig();
             performanceConfig.config(manager);
         };
