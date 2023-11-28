@@ -26,7 +26,7 @@
     <lombok.version>1.18.30</lombok.version>
     <pagehelper.version>5.3.3</pagehelper.version>
     <one-zero.version>1.0.0</one-zero.version>
-    <beetlsql.version>3.27.1-RELEASE</beetlsql.version>
+    <beetlsql.version>3.27.2-RELEASE</beetlsql.version>
   </properties>
 
   <repositories>

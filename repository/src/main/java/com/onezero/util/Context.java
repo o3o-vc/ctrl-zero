@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public interface Context {
-    ThreadLocal<Map<String, Object>> paramsLocal = ThreadLocal.withInitial(() -> new HashMap<>());
+    ThreadLocal<Map<String, Object>> paramsLocal = ThreadLocal.withInitial(HashMap::new);
 
     static <T> T get(String key, Class<T> clazz) {
         var val = paramsLocal.get().get(key);

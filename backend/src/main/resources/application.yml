@@ -19,6 +19,6 @@ refresh-token:
 beetlsql:
   sqlManagers: sqlManager1
   sqlManager1:
-    ds: datasource
+    ds: dataSource
     basePackage: com.onezero.mapper
     dbStyle: com.onezero.config.CzMysqlStyle
