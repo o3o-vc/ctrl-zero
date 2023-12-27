@@ -50,12 +50,12 @@ public class Initial implements CommandLineRunner {
         /*User user = new User();
         user.setName("abc");
         userService.add(user);
-        System.out.println(user);*/
+        System.out.println(user);
         TestDo testDo = new TestDo();
         testDo.setName("haoa");
         testDo.setMark("bieguan");
         testMapper.testInsert(testDo);
-        testMapper.updateById(testDo);
+        testMapper.updateById(testDo);*/
         User byUsername = userService.getByUsername("admin");
         System.out.println(byUsername);
     }

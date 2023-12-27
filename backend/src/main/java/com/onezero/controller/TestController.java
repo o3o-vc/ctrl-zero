@@ -26,6 +26,8 @@ public class TestController {
         TestDo testDo = new TestDo();
         testDo.setName("test");
         testDo.setMark("haha");
+
+
 //        testMapper.insert(testDo);
         /*List<TestDo> testDos = testMapper.selectAll();
         System.out.println(testDos);
