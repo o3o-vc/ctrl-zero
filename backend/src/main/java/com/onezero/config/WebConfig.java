@@ -51,9 +51,9 @@ public class WebConfig implements WebMvcConfigurer {
         SimpleModule simpleModule = new SimpleModule();
         simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
         simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-        simpleModule.addSerializer(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(PatternConst.DATETIME_FORMAT)));
-        simpleModule.addSerializer(new LocalDateSerializer(DateTimeFormatter.ofPattern(PatternConst.DATE_FORMAT)));
-        simpleModule.addSerializer(new LocalTimeSerializer(DateTimeFormatter.ofPattern(PatternConst.TIME_FORMAT)));
+        simpleModule.addSerializer(new LocalDateTimeSerializer(PatternConst.DATE_TIME_FORMATTER));
+        simpleModule.addSerializer(new LocalDateSerializer(PatternConst.DATE_FORMATTER));
+        simpleModule.addSerializer(new LocalTimeSerializer(PatternConst.MONTH_FORMATTER));
         simpleModule.addSerializer(IEnum.class, new JsonSerializer<>() {
             @Override
             public void serialize(IEnum iEnum, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
